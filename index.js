@@ -12,21 +12,21 @@ var gutil = require('gulp-util'),
     });
 
 var build_arguments = function (opts) {
-        var i, args = [], // initialize command array
-            keys = Object.keys(opts),
-            parameter;
-        for (i = 0; i < keys.length; i += 1) {
-            if (opts[keys[i]]) { //handle false case if passed in explicitly
-                parameter = ((keys[i].length === 1) ? '-' : '--'); // use - for d, w, n, etc.
-                parameter += keys[i]; // add parameter name
-                if (typeof opts[keys[i]] !== 'boolean') {
-                    parameter += ' ' + opts[keys[i]];
-                }
-                args.push(parameter); // add parameter to command array
+    var i, args = [], // initialize command array
+        keys = Object.keys(opts),
+        parameter;
+    for (i = 0; i < keys.length; i += 1) {
+        if (opts[keys[i]]) { //handle false case if passed in explicitly
+            parameter = ((keys[i].length === 1) ? '-' : '--'); // use - for d, w, n, etc.
+            parameter += keys[i]; // add parameter name
+            if (typeof opts[keys[i]] !== 'boolean') {
+                parameter += ' ' + opts[keys[i]];
             }
+            args.push(parameter); // add parameter to command array
         }
-        return args.join(' ');
-    },
+    }
+    return args.join(' ');
+},
     log_indent = '|   ',
     log_exec = function (output) {
         var output_lines = output.replace(/^\s+|\s+$/, '').split(/[\n\r]+/), // Trims the output and returns it split into an array of lines
@@ -203,6 +203,7 @@ module.exports = function (cmd, opts) {
             silent: true,
             async: false
         });
+        if (typeof execReturn.output === 'undefined') execReturn.output = execReturn.stderr;
         handle_exec(execReturn.code, execReturn.output);
     }
 
